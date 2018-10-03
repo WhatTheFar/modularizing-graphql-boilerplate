@@ -1,0 +1,44 @@
+version: '3'
+services:
+  prisma:
+    image: prismagraphql/prisma:1.16
+    restart: always
+    depends_on: 
+      - postgres
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            host: postgres
+            port: 5432
+            user: ${POSTGRES_USER}
+            password: ${POSTGRES_PASSWORD}
+            migrations: true
+    volumes: 
+      - ./scripts/wait-for.sh:/wait-for.sh
+    entrypoint: /bin/sh
+    command: ["/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
+  postgres:
+    image: postgres:10
+    restart: always
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  backend:
+    build: 
+      context: .
+    image: graphql-backend
+    depends_on:
+      - prisma
+    environment: 
+      PRISMA_ENDPOINT: http://prisma:4466
+      PRISMA_SECRET:
+      APP_SECRET:
+volumes: 
+  postgres:

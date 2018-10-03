@@ -1,0 +1,51 @@
+{
+	"name": "monkey-online-backend",
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "npm-run-all --parallel start playground",
+		"start": "nodemon -e ts,graphql --ignore src/generated/schema.graphql -x ts-node -r dotenv/config src/index.ts",
+		"start:prod": "node dist/index.js",
+		"test": "jest",
+		"watch-test": "yarn test --watchAll",
+		"playground": "graphql playground",
+		"build": "sh ./scripts/build-src.sh",
+		"prisma-deploy": "ts-node prisma/datamodel.ts && prisma deploy",
+		"seed": "ts-node seed/index.ts",
+		"lint": "yarn tslint && yarn prettier",
+		"tslint": "tslint -c tslint.json -p tsconfig.json -e \"./src/generated/*.ts\" --fix",
+		"prettier": "prettier --config ./.prettierrc --write \"./src/{!(generated)/**/,}*.{ts,graphql}\""
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "2.4.3",
+		"graphql": "0.13.2",
+		"graphql-shield": "^3.2.1",
+		"graphql-tag": "2.9.2",
+		"graphql-tools": "3.1.1",
+		"graphql-yoga": "1.16.2",
+		"jsonwebtoken": "8.3.0",
+		"lodash": "^4.17.11",
+		"merge-graphql-schemas": "^1.5.4",
+		"prisma-binding": "2.1.5",
+		"util": "^0.11.0"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "2.4.1",
+		"@types/jest": "^23.3.2",
+		"@types/lodash": "^4.14.116",
+		"dotenv": "5.0.1",
+		"graphql-cli": "2.16.7",
+		"graphql-request": "^1.8.2",
+		"jest": "^23.6.0",
+		"nodemon": "1.18.4",
+		"npm-run-all": "4.1.3",
+		"prettier": "^1.12.1",
+		"prettierrc": "^0.0.0-5",
+		"prisma": "1.15.3",
+		"ts-jest": "^23.10.1",
+		"ts-node": "6.2.0",
+		"tslint": "^5.10.0",
+		"typescript": "2.9.2"
+	}
+}

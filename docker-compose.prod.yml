@@ -1,0 +1,36 @@
+version: '3'
+
+services: 
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes: 
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ${NGINX_FILES_PATH:-./nginx-data}/vhost.d:/etc/nginx/vhost.d
+      - ${NGINX_FILES_PATH:-./nginx-data}/html:/usr/share/nginx/html
+      - ${NGINX_FILES_PATH:-./nginx-data}/certs:/etc/nginx/certs:ro
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    depends_on: 
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${NGINX_FILES_PATH:-./nginx-data}/vhost.d:/etc/nginx/vhost.d
+      - ${NGINX_FILES_PATH:-./nginx-data}/html:/usr/share/nginx/html
+      - ${NGINX_FILES_PATH:-./nginx-data}/certs:/etc/nginx/certs:rw
+  backend:
+    restart: always
+    ports: 
+      - 4000:4000
+    environment: 
+      NODE_ENV: production
+      VIRTUAL_HOST: ${BACKEND_VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${BACKEND_VIRTUAL_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    command: sh /wait-for.sh -t 30 prisma:4466 -- sh -c 'yarn prisma-deploy && yarn start:prod'

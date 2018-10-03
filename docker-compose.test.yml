@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    volumes:
+      - postgres-test:/var/lib/postgresql/data
+  backend:
+    build: 
+      context: .
+      dockerfile: dockerfile-dev
+    image: graphql-backend-dev
+    volumes: 
+      - .:/opt/app
+    environment: 
+      NODE_ENV: test
+    command: bash /wait-for-it.sh -t 30 prisma:4466 -- sh -c 'yarn && yarn prisma-deploy && yarn test'
+volumes: 
+  postgres-test:

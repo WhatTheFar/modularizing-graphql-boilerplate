@@ -1,0 +1,10 @@
+FROM node:10
+
+# Location of source code
+ENV PROJECT_ROOT /opt/app
+RUN mkdir -p $PROJECT_ROOT
+WORKDIR $PROJECT_ROOT
+
+COPY ./scripts/wait-for-it.sh /
+
+CMD echo 'No command'
