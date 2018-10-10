@@ -1,6 +1,21 @@
 # Modularized GraphQL Boilerplate with Testing
 
-An all-in-one modularized GraphQL server boilerplate
+Fully-feature modularized GraphQL Server boilerplate with production-ready containerized workflow.
+
+## Overview
+
+* Easiest way to run a GraphQL server: Sensible defaults & includes everything you need with minimal setup.
+* Practical: Built-in scripts to facilitate common workflows.
+* Production-ready: Containerized with nginx and letsencrypt configuration.
+* Testability: Including complete testing environment wih modular package.
+
+This project is based on the following lobraries & tools:
+* [`graphql-yoga`](https://github.com/prisma/graphql-yoga): Fully-featured GraphQL server framework
+* [`graphql-shield`](https://github.com/maticzav/graphql-shield): GraphQL Server permissions as another layer of abstraction!
+* [`merge-graphql-schemas`](https://github.com/okgrow/merge-graphql-schemas): A utility library to facilitate merging of modularized GraphQL schemas and resolver objects.
+* [`prisma`](https://github.com/prisma/prisma): GraphQL ORM-like* layer  between between your GraphQL API and database
+* [`prisma-binding`](https://github.com/prisma/prisma-binding): GraphQL Binding for Prisma services (GraphQL Database)
+* [`graphql-playground`](https://github.com/graphcool/graphql-playground): Interactive GraphQL IDE
 
 ## Getting started
 
@@ -19,7 +34,7 @@ To clean the project run following command(s).
 bash scripts/clean-local.sh
 ```
 
-**Note:** Recommended for the first run.
+> **Note:** Recommended for the first run.
 
 ### Run the project
 
@@ -32,7 +47,7 @@ bash scripts/clean-local.sh
    ```sh
    bash scripts/graphql-playground.sh
    ```
-   **Note:** Make sure your machine has GraphQL Playground installed. Otherwise, download it from [Releases](https://github.com/prisma/graphql-playground/releases) or [install via Homebrew](https://github.com/prisma/graphql-playground#installation).
+   > **Note:** To use native GraphQL Playground, download it from [Releases](https://github.com/prisma/graphql-playground/releases) or [install via Homebrew](https://github.com/prisma/graphql-playground#installation).
 
 ## Testing
 
@@ -60,4 +75,21 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 We are using angular [commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines), make sure you are following those rules.
 
-Last but not least, feel free to make discussions and open a pull request.
+Feel free to make discussions and open a pull request.
+
+License
+-
+
+    Copyright 2018 Jakpat Mingmongkolmitr
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
