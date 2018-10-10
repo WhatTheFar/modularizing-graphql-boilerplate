@@ -73,9 +73,9 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 ## Contributing
 
-We are using angular [commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines), make sure you are following those rules.
+Contributions are **welcome and extremely helpful** 🙌, feel free to make discussions and open a pull request.
 
-Feel free to make discussions and open a pull request.
+This project use angular [commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines), please refer to the guildlines for more information.
 
 License
 -
