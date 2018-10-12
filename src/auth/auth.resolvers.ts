@@ -15,10 +15,7 @@ export const authResolver = {
 			const user = await ctx.db.mutation.createUser({
 				data: {
 					...args,
-					password,
-					roles: {
-						set: 'USER'
-					}
+					password
 				}
 			});
 
