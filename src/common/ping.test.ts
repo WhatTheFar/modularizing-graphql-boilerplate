@@ -1,32 +1,58 @@
-import { request } from 'graphql-request';
-import { AddressInfo, Server } from 'net';
-import { promisify } from 'util';
-import { startServer } from './../server';
+import { requestGql } from '../test-utils';
+import { db } from './../server';
 
-let app: Server = null;
-let getHost = () => '';
+let token: string;
+
+const email = 'ping@gmail.com';
+const signupGql = `
+mutation {
+	signup(
+		email: "${email}"
+		password: "password123"
+		firstName: "John"
+		lastName: "Doe"
+	) {
+		token
+	}
+  }
+`;
 
 beforeAll(async () => {
-	app = await startServer();
-	const { port } = app.address() as AddressInfo;
-	getHost = () => `http://localhost:${port}`;
-});
-
-afterAll(async () => {
-	if (app) {
-		await promisify(app.close).call(app);
+	try {
+		if (await db.exists.User({ email })) {
+			await db.mutation.deleteUser({ where: { email } });
+		}
+	} catch (error) {
+		// do nothing
 	}
+	const res = await requestGql(signupGql);
+	token = `Bearer ${res.body.data.signup.token}`;
 });
 
 test('ping', async () => {
 	expect.assertions(1);
-	const response = await request(
-		getHost(),
-		`
-        query {
-            ping
-        }
-        `
-	);
-	expect(response).toEqual({ ping: 'pong' });
+	const gql = `
+	    query {
+	        ping
+	    }
+	`;
+
+	await requestGql(gql).expect(res => {
+		expect(res.body.data).toEqual({ ping: 'pong' });
+	});
+});
+
+test('pingAuthenticated', async () => {
+	expect.assertions(1);
+	const gql = `
+	    query {
+	        pingAuthenticated
+	    }
+	`;
+
+	await requestGql(gql)
+		.set('Authorization', token)
+		.expect(res => {
+			expect(res.body.data).toEqual({ pingAuthenticated: 'pong' });
+		});
 });

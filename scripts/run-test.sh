@@ -9,5 +9,6 @@ fi
 export PRISMA_ENDPOINT=http://localhost:4466
 echo "# Setting up environment"
 docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d prisma
+yarn prisma-deploy
 echo "# Running test"
 yarn test

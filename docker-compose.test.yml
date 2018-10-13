@@ -1,5 +1,8 @@
 version: '3'
 services:
+  prisma:
+    ports:
+      - 4466:4466
   postgres:
     volumes:
       - postgres-test:/var/lib/postgresql/data

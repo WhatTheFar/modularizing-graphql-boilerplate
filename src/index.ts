@@ -1,7 +1,7 @@
 import { AddressInfo } from 'net';
-import { startServer } from './server';
+import { server } from './server';
 
-startServer().then(app => {
-	const { port } = app.address() as AddressInfo;
+server.listen(process.env.PORT || 4000, () => {
+	const { port } = server.address() as AddressInfo;
 	console.log(`Server is running on http://localhost:${port}`);
 });
