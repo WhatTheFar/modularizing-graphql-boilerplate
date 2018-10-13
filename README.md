@@ -1,4 +1,5 @@
 # Modularized GraphQL Boilerplate with Testing
+[![CircleCI](https://circleci.com/gh/WhatTheFar/modularizing-graphql-boilerplate/tree/master.svg?style=svg)](https://circleci.com/gh/WhatTheFar/modularizing-graphql-boilerplate/tree/master)
 
 Fully-feature modularized GraphQL Server boilerplate with production-ready containerized workflow.
 
