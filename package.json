@@ -1,5 +1,6 @@
 {
-	"name": "monkey-online-backend",
+	"name": "modularizing-graphql-boilerplate",
+	"description": "Fully-feature modularized GraphQL Server boilerplate with production-ready containerized workflow.",
 	"version": "0.0.0",
 	"scripts": {
 		"dev": "npm-run-all --parallel start playground",
@@ -15,7 +16,11 @@
 		"tslint": "tslint -c tslint.json -p tsconfig.json -e \"./src/generated/*.ts\" --fix",
 		"prettier": "prettier --config ./.prettierrc --write \"./src/{!(generated)/**/,}*.{ts,graphql}\""
 	},
-	"author": "",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WhatTheFar/express-gateway-plugin-cas.git"
+	},
+	"author": "Jakpat Mingmongkolmitr",
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "2.4.3",
