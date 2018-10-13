@@ -8,10 +8,7 @@ else
 fi
 export PRISMA_ENDPOINT=http://localhost:4466
 if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
-    echo "# Setting up environment"
-    # run container
-    docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d prisma
-    sleep 5
+    bash scripts/setup-test.sh
 fi
 echo "# Running test"
 yarn watch-test

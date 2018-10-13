@@ -40,11 +40,11 @@ bash scripts/clean-local.sh
 ### Run the project
 
 1. (Optional) Clean project, follow [Clean Project](#clean-project) topic above. (Recommended if you run for the first time).
-2. Run command
+2. Start GraphQL server:
    ```sh
    bash scripts/run-local.sh
    ```
-3. (Optional) Start [GraphQL Playground](https://github.com/prisma/graphql-playground)
+3. (Optional) Start [GraphQL Playground](https://github.com/prisma/graphql-playground):
    ```sh
    bash scripts/graphql-playground.sh
    ```
@@ -55,11 +55,11 @@ bash scripts/clean-local.sh
 ### Run the test
 
 1. (Optional) Make sure you have run the project once.
-2. (Optional) To clear running docker container, Run command
+2. Setting up test environment:
    ```sh
-   bash scripts/clear-container.sh
+   bash scripts/setup-test.sh
    ```
-3. Run command
+3. Run the test:
     ```sh
     bash scripts/run-test.sh
     # OR
