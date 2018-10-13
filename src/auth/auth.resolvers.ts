@@ -1,6 +1,11 @@
 import * as bcrypt from 'bcryptjs';
+import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
 import { AuthError, getUser } from '../utils';
+import { User } from './../generated/prisma';
+
+const generateToken = (user: User) =>
+	jwt.sign({ userId: user.id }, process.env.APP_SECRET || 'jwt_secret');
 
 export const authResolver = {
 	Query: {
@@ -10,7 +15,7 @@ export const authResolver = {
 	},
 
 	Mutation: {
-		async signup(parent, args, ctx: Context, info) {
+		async signup(parent, args, ctx: Context, info: GraphQLResolveInfo) {
 			const password = await bcrypt.hash(args.password, 10);
 			const user = await ctx.db.mutation.createUser({
 				data: {
@@ -20,7 +25,7 @@ export const authResolver = {
 			});
 
 			return {
-				token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+				token: generateToken(user),
 				user
 			};
 		},
@@ -34,7 +39,10 @@ export const authResolver = {
 			}
 
 			return {
-				token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+				token: jwt.sign(
+					{ userId: user.id },
+					process.env.APP_SECRET || 'jwt_secret'
+				),
 				user
 			};
 		}
