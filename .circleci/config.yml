@@ -1,0 +1,60 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.0
+jobs:
+  build:
+    environment:
+      CACHE_VERSION: '1.0'
+      PRISMA_ENDPOINT: http://localhost:4466
+      PRISMA_SECRET: prisma_secret
+      APP_SECRET: app_secret
+    docker:
+      - image: circleci/node:8
+      - image: postgres:10
+        environment:
+          POSTGRES_USER: prisma
+          POSTGRES_PASSWORD: prisma
+      - image: prismagraphql/prisma:1.16
+        environment:
+          PRISMA_CONFIG: |
+            port: 4466
+            # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+            # managementApiSecret: my-secret
+            databases:
+              default:
+                connector: postgres
+                host: localhost
+                port: 5432
+                user: prisma
+                password: prisma
+                migrations: true
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+            - dependencies-{{ .Environment.CACHE_VERSION }}
+      
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - run:
+          name: Deploy Prisma Service
+          command: yarn prisma-deploy
+
+      - run:
+          name: Running Test
+          command: yarn test
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
