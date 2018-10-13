@@ -64,6 +64,7 @@ bash scripts/clean-local.sh
     # OR
     bash scripts/run-watch-test.sh # To run test in watch mode
     ```
+    > **NOTE**: Repeat step 3 to run test again
 
 ## Build & Deploy
 
