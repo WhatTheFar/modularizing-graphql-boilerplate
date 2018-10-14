@@ -7,11 +7,7 @@ else
     exit 1
 fi
 export PRISMA_ENDPOINT=http://localhost:4466
-if [ "$(docker ps -q)" ]; then
-    echo '# stop and remove running container'
-    docker stop $(docker ps -q)
-    docker rm $(docker ps -aq)
-fi
+bash scripts/clear-container.sh
 if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
     echo "# Setting up environment"
     # run container
