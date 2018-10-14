@@ -10,7 +10,7 @@ Fully-feature modularized GraphQL Server boilerplate with production-ready conta
 * Production-ready: Containerized with nginx and letsencrypt configuration.
 * Testability: Including complete testing environment wih modular package.
 
-This project is based on the following lobraries & tools:
+This project is based on the following libraries & tools:
 * [`graphql-yoga`](https://github.com/prisma/graphql-yoga): Fully-featured GraphQL server framework
 * [`graphql-shield`](https://github.com/maticzav/graphql-shield): GraphQL Server permissions as another layer of abstraction!
 * [`merge-graphql-schemas`](https://github.com/okgrow/merge-graphql-schemas): A utility library to facilitate merging of modularized GraphQL schemas and resolver objects.
@@ -54,7 +54,7 @@ bash scripts/clean-local.sh
 
 ### Run the test
 
-1. (Optional) Make sure you have run the project once.
+1. Make sure you have [run the project](#Run-the-project) once.
 2. Setting up test environment:
    ```sh
    bash scripts/setup-test.sh
