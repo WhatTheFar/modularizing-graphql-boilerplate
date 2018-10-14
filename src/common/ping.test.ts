@@ -1,32 +1,18 @@
-import { requestGql } from '../test-utils';
-import { db } from './../server';
+import { getUserBearerToken, mockUserArgs, requestGql } from '../test-utils';
+import { ISignupArgs } from './../auth/auth.resolvers';
+import { createTestUserIfNotExist } from './../test-utils';
 
 let token: string;
 
 const email = 'ping@gmail.com';
-const signupGql = `
-mutation {
-	signup(
-		email: "${email}"
-		password: "password123"
-		firstName: "John"
-		lastName: "Doe"
-	) {
-		token
-	}
-  }
-`;
+const signupArgs: ISignupArgs = {
+	...mockUserArgs,
+	email
+};
 
 beforeAll(async () => {
-	try {
-		if (await db.exists.User({ email })) {
-			await db.mutation.deleteUser({ where: { email } });
-		}
-	} catch (error) {
-		// do nothing
-	}
-	const res = await requestGql(signupGql);
-	token = `Bearer ${res.body.data.signup.token}`;
+	await createTestUserIfNotExist(signupArgs);
+	token = await getUserBearerToken({ email });
 });
 
 test('ping', async () => {

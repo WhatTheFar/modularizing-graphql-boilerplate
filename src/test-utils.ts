@@ -1,13 +1,19 @@
 import * as request from 'supertest';
+import { createUserToPrisma, generateToken, ISignupArgs } from './auth/auth.resolvers';
+import { User, UserWhereUniqueInput } from './generated/prisma';
+import { db } from './server';
 import { graphqlServer, server } from './server';
 
-export interface IHeaders {
-	[key: string]: string;
-}
-
-export interface IVariables {
+interface IVariables {
 	[key: string]: any;
 }
+
+export const mockUserArgs: ISignupArgs = {
+	email: 'jakpat.m@gmail.com',
+	password: 'password123',
+	firstName: 'John',
+	lastName: 'Doe'
+};
 
 export const requestGql = (query: string, variables?: IVariables) => {
 	const body = JSON.stringify({
@@ -18,4 +24,23 @@ export const requestGql = (query: string, variables?: IVariables) => {
 		.post(graphqlServer.options.endpoint || '/')
 		.set('Content-Type', 'application/json')
 		.send(body);
+};
+
+export const createTestUserIfNotExist = async (args: ISignupArgs) => {
+	if (!(await db.exists.User({ email: args.email }))) {
+		await createUserToPrisma(db, args);
+	}
+};
+
+export const getUserBearerToken = async (userWhereUniqueInput: UserWhereUniqueInput) => {
+	const user = (await db.query.user({ where: userWhereUniqueInput })) as User;
+	return `Bearer ${generateToken(user)}`;
+};
+
+export const deleteTestUserIfExists = async (
+	userWhereUniqueInput: UserWhereUniqueInput
+) => {
+	if (await db.exists.User(userWhereUniqueInput)) {
+		await db.mutation.deleteUser({ where: userWhereUniqueInput });
+	}
 };

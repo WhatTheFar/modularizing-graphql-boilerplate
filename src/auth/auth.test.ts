@@ -1,35 +1,44 @@
-import { requestGql } from '../test-utils';
-import { db } from './../server';
+import { deleteTestUserIfExists, requestGql } from '../test-utils';
+import { UserWhereUniqueInput } from './../generated/prisma';
+import { createTestUserIfNotExist, mockUserArgs } from './../test-utils';
+import { ILoginArgs, ISignupArgs } from './auth.resolvers';
 
 const email = 'auth@gmail.com';
-const signupGql = `
-mutation {
-	signup(
-		email: "${email}"
-		password: "password123"
-		firstName: "John"
-		lastName: "Doe"
-	) {
-		token
-	}
-  }
-`;
+const password = 'password123';
+const userWhereUniqueInput: UserWhereUniqueInput = {
+	email
+};
+const signupArgs: ISignupArgs = {
+	...mockUserArgs,
+	email,
+	password
+};
+const loginArgs: ILoginArgs = {
+	email,
+	password
+};
 
 describe('signup', () => {
 	beforeEach(async () => {
-		try {
-			if (await db.exists.User({ email })) {
-				await db.mutation.deleteUser({ where: { email } });
-			}
-		} catch (error) {
-			// do nothing
-		}
+		await deleteTestUserIfExists(userWhereUniqueInput);
 	});
 
 	test('should return token', async () => {
 		expect.assertions(1);
 
-		await requestGql(signupGql).expect(res => {
+		const signupGql = `
+			mutation signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+				signup (
+					email: $email
+					password: $password
+					firstName: $firstName
+					lastName: $lastName
+				) {
+					token
+				}
+		 	}
+		`;
+		await requestGql(signupGql, signupArgs).expect(res => {
 			expect(res.body).toHaveProperty('data.signup.token');
 		});
 	});
@@ -37,25 +46,23 @@ describe('signup', () => {
 
 describe('login', () => {
 	beforeEach(async () => {
-		if (!(await db.exists.User({ email }))) {
-			await requestGql(signupGql);
-		}
+		createTestUserIfNotExist(signupArgs);
 	});
 
 	test('should return token', async () => {
 		expect.assertions(1);
 		const gql = `
-			mutation {
+			mutation login($email: String!, $password: String!) {
 				login (
-					email: "${email}"
-		  			password: "password123"
+					email: $email
+		  			password: $password
 				) {
 		  			token
 				}
 	  		}
 		`;
 
-		await requestGql(gql).expect(res => {
+		await requestGql(gql, loginArgs).expect(res => {
 			expect(res.body).toHaveProperty('data.login.token');
 		});
 	});

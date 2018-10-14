@@ -2,10 +2,33 @@ import * as bcrypt from 'bcryptjs';
 import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
 import { AuthError, getUser } from '../utils';
-import { User } from './../generated/prisma';
+import { Prisma, User } from './../generated/prisma';
 
-const generateToken = (user: User) =>
+export const generateToken = (user: User) =>
 	jwt.sign({ userId: user.id }, process.env.APP_SECRET || 'jwt_secret');
+
+export const createUserToPrisma = async (prisma: Prisma, args: ISignupArgs) => {
+	const password = await bcrypt.hash(args.password, 10);
+	const user = await prisma.mutation.createUser({
+		data: {
+			...args,
+			password
+		}
+	});
+	return user;
+};
+
+export interface ISignupArgs {
+	email: string;
+	password: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface ILoginArgs {
+	email: string;
+	password: string;
+}
 
 export const authResolver = {
 	Query: {
@@ -15,14 +38,8 @@ export const authResolver = {
 	},
 
 	Mutation: {
-		async signup(parent, args, ctx: Context, info: GraphQLResolveInfo) {
-			const password = await bcrypt.hash(args.password, 10);
-			const user = await ctx.db.mutation.createUser({
-				data: {
-					...args,
-					password
-				}
-			});
+		async signup(parent, args: ISignupArgs, ctx: Context, info: GraphQLResolveInfo) {
+			const user = await createUserToPrisma(ctx.db, args);
 
 			return {
 				token: generateToken(user),
@@ -39,10 +56,7 @@ export const authResolver = {
 			}
 
 			return {
-				token: jwt.sign(
-					{ userId: user.id },
-					process.env.APP_SECRET || 'jwt_secret'
-				),
+				token: generateToken(user),
 				user
 			};
 		}
