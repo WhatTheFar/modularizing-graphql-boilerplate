@@ -6,7 +6,6 @@ version: 2.0
 jobs:
   build:
     environment:
-      CACHE_VERSION: '1.0'
       PRISMA_ENDPOINT: http://localhost:4466
       PRISMA_SECRET: prisma_secret
       APP_SECRET: app_secret
@@ -38,9 +37,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
+            - dependencies-v1.0-{{ .Branch }}-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-            - dependencies-{{ .Environment.CACHE_VERSION }}
+            - dependencies-v1.0-{{ .Branch }}
       
       - run:
           name: Install Dependencies
@@ -57,4 +56,4 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
+          key: dependencies-v1.0-{{ .Branch }}-{{ checksum "package.json" }}
