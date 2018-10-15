@@ -1,6 +1,6 @@
 import { ISignupArgs } from '../../src/auth/auth.resolvers';
 import { requestGql } from '../../src/test-utils';
-import { signupGql } from './../../src/auth/auth.resolvers';
+import { signupGql } from './../../src/auth/auth.test';
 import { logGraphqlError } from './../utils';
 
 export const seedUserArgs: ISignupArgs = {

@@ -1,7 +1,7 @@
 import { deleteTestUserIfExists, requestGql } from '../test-utils';
 import { UserWhereUniqueInput } from './../generated/prisma';
 import { createTestUserIfNotExist, mockUserArgs } from './../test-utils';
-import { ILoginArgs, ISignupArgs, loginGql, signupGql } from './auth.resolvers';
+import { ILoginArgs, ISignupArgs } from './auth.resolvers';
 
 const email = 'auth@gmail.com';
 const password = 'password123';
@@ -17,6 +17,30 @@ const loginArgs: ILoginArgs = {
 	email,
 	password
 };
+
+export const signupGql = `
+	mutation signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+		signup (
+			email: $email
+			password: $password
+			firstName: $firstName
+			lastName: $lastName
+		) {
+			token
+		}
+	}
+`;
+
+export const loginGql = `
+	mutation login($email: String!, $password: String!) {
+		login (
+			email: $email
+			password: $password
+		) {
+			token
+		}
+	}
+`;
 
 describe('signup', () => {
 	beforeEach(async () => {

@@ -25,34 +25,10 @@ export interface ISignupArgs {
 	lastName: string;
 }
 
-export const signupGql = `
-	mutation signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
-		signup (
-			email: $email
-			password: $password
-			firstName: $firstName
-			lastName: $lastName
-		) {
-			token
-		}
-	}
-`;
-
 export interface ILoginArgs {
 	email: string;
 	password: string;
 }
-
-export const loginGql = `
-	mutation login($email: String!, $password: String!) {
-		login (
-			email: $email
-			password: $password
-		) {
-			token
-		}
-	}
-`;
 
 export const authResolver = {
 	Query: {
@@ -71,7 +47,7 @@ export const authResolver = {
 			};
 		},
 
-		async login(parent, args, ctx: Context, info) {
+		async login(parent, args: ILoginArgs, ctx: Context, info) {
 			const user = await ctx.db.query.user({ where: { email: args.email } });
 			const valid = await bcrypt.compare(args.password, user ? user.password : '');
 
