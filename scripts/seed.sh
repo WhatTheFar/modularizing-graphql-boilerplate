@@ -8,4 +8,13 @@ else
 fi
 
 export PRISMA_ENDPOINT=http://localhost:4466
+if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
+    echo "# Setting up environment"
+    # run container
+    docker-compose up -d prisma
+    echo "# Wating for database"
+    sleep 10
+    echo "# Deploying prisma service"
+    yarn prisma-deploy
+fi
 yarn seed

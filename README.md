@@ -48,13 +48,22 @@ bash scripts/clean-local.sh
    ```sh
    bash scripts/graphql-playground.sh
    ```
-   > **Note:** To use native GraphQL Playground, download it from [Releases](https://github.com/prisma/graphql-playground/releases) or [install via Homebrew](https://github.com/prisma/graphql-playground#installation).
+   > **NOTE:** To use desktop version of GraphQL Playground, download it from [releases](https://github.com/prisma/graphql-playground/releases) or [install via Homebrew](https://github.com/prisma/graphql-playground#installation).
 
+### Seed the database
+Seed initial data to database for development.
+
+1. Make sure you have [run the project](#run-the-project)  once.
+2. Recommended for an empty database. If database is dirty, there might occurs some error during the seed.
+3. Seed the database:
+    ```sh
+    bash scripts/seed.sh
+    ```
 ## Testing
 
 ### Run the test
 
-1. Make sure you have [run the project](#Run-the-project) once.
+1. Make sure you have [run the project](#run-the-project) once.
 2. Setting up test environment:
    ```sh
    bash scripts/setup-test.sh
