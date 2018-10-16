@@ -8,8 +8,13 @@ type Mutation {
 		password: String!
 		firstName: String!
 		lastName: String!
-	): AuthPayload!
-	login(email: String!, password: String!): AuthPayload!
+	): AuthPayloadWithError!
+	login(email: String!, password: String!): AuthPayloadWithError!
+}
+
+type AuthPayloadWithError {
+	payload: AuthPayload
+	error: MutationValidationError
 }
 
 type AuthPayload {
