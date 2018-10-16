@@ -3,6 +3,7 @@ import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
 import { AuthError, getUser } from '../utils';
 import { Prisma, User } from './../generated/prisma';
+import { loginValidationSchema, signupValidationSchema } from './auth.validation';
 
 export const generateToken = (user: User) =>
 	jwt.sign({ userId: user.id }, process.env.APP_SECRET || 'jwt_secret');
@@ -38,33 +39,53 @@ export const authResolver = {
 	},
 
 	Mutation: {
-		async signup(parent, args: ISignupArgs, ctx: Context, info: GraphQLResolveInfo) {
-			const user = await createUserToPrisma(ctx.db, args);
-
-			return {
-				token: generateToken(user),
-				user
-			};
+		signup: {
+			validationSchema: signupValidationSchema,
+			resolve: async (
+				parent,
+				args: ISignupArgs,
+				ctx: Context,
+				info: GraphQLResolveInfo
+			) => {
+				const user = await createUserToPrisma(ctx.db, args);
+				return {
+					payload: {
+						token: generateToken(user),
+						user
+					}
+				};
+			}
 		},
 
-		async login(parent, args: ILoginArgs, ctx: Context, info) {
-			const user = await ctx.db.query.user({ where: { email: args.email } });
-			const valid = await bcrypt.compare(args.password, user ? user.password : '');
+		login: {
+			validationSchema: loginValidationSchema,
+			resolve: async (parent, args: ILoginArgs, ctx: Context, info) => {
+				const user = await ctx.db.query.user({ where: { email: args.email } });
+				const valid = await bcrypt.compare(
+					args.password,
+					user ? user.password : ''
+				);
 
-			if (!valid || !user) {
-				throw new AuthError();
+				if (!valid || !user) {
+					throw new AuthError();
+				}
+
+				return {
+					payload: {
+						token: generateToken(user),
+						user
+					}
+				};
 			}
-
-			return {
-				token: generateToken(user),
-				user
-			};
 		}
 	},
 
 	AuthPayload: {
 		async user(parent, args, context, info) {
-			return context.db.query.user({ where: { id: parent.user.id } }, info);
+			if (parent.user.id) {
+				return context.db.query.user({ where: { id: parent.user.id } }, info);
+			}
+			return parent.user;
 		}
 	}
 };

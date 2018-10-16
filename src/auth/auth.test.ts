@@ -26,7 +26,9 @@ export const signupGql = `
 			firstName: $firstName
 			lastName: $lastName
 		) {
-			token
+			payload {
+				token
+			}
 		}
 	}
 `;
@@ -37,7 +39,9 @@ export const loginGql = `
 			email: $email
 			password: $password
 		) {
-			token
+			payload {
+				token
+			}
 		}
 	}
 `;
@@ -51,7 +55,7 @@ describe('signup', () => {
 		expect.assertions(1);
 
 		await requestGql(signupGql, signupArgs).expect(res => {
-			expect(res.body).toHaveProperty('data.signup.token');
+			expect(res.body).toHaveProperty('data.signup.payload.token');
 		});
 	});
 });
@@ -65,7 +69,7 @@ describe('login', () => {
 		expect.assertions(1);
 
 		await requestGql(loginGql, loginArgs).expect(res => {
-			expect(res.body).toHaveProperty('data.login.token');
+			expect(res.body).toHaveProperty('data.login.payload.token');
 		});
 	});
 });
