@@ -1,7 +1,10 @@
+import * as _ from 'lodash';
 import { deleteTestUserIfExists, requestGql } from '../test-utils';
 import { UserWhereUniqueInput } from './../generated/prisma';
 import { createTestUserIfNotExist, mockUserArgs } from './../test-utils';
 import { ILoginArgs, ISignupArgs } from './auth.resolvers';
+import { signupValidationSchema } from './auth.validation';
+import { ValidationError } from 'yup';
 
 const email = 'auth@gmail.com';
 const password = 'password123';
@@ -46,7 +49,55 @@ export const loginGql = `
 	}
 `;
 
-describe('signup', () => {
+describe('signup validation', () => {
+	test('should valid', async () => {
+		expect.assertions(1);
+
+		expect(await signupValidationSchema.isValid(signupArgs)).toBeTruthy();
+	});
+
+	test('missing args should be invalid', async () => {
+		expect.assertions(2);
+		const args = {
+			...signupArgs,
+			email: '',
+			firstName: '',
+			lastName: ''
+		};
+
+		// Should be invalid
+		expect(await signupValidationSchema.isValid(args)).toBeFalsy();
+
+		try {
+			// In the case of aggregate errors,
+			// inner is an array of ValidationErrors throw earlier in the validation chain.
+			// When the abortEarly option is false this is where you can inspect each error thrown,
+			// alternatively errors will have all the of the messages from each inner error.
+			await signupValidationSchema.validate(args, { abortEarly: false });
+		} catch (error) {
+			if (error instanceof ValidationError) {
+				// NOTE: if 'abortEarly' is false, the errors will be in 'inner'
+				expect(_.map(error.inner, 'path')).toEqual(
+					// Expecting 3 ValidationError
+					expect.arrayContaining(['email', 'firstName', 'lastName'])
+				);
+			}
+		}
+	});
+
+	test('invalid email should be rejected', async () => {
+		expect.assertions(1);
+
+		await expect(
+			signupValidationSchema.validate({
+				...signupArgs,
+				email: 'this_is_not_an_email'
+			})
+		).rejects.toHaveProperty('path', 'email');
+	});
+});
+
+describe('signup resolver', () => {
 	beforeEach(async () => {
 		await deleteTestUserIfExists(userWhereUniqueInput);
 	});
@@ -60,7 +111,7 @@ describe('signup', () => {
 	});
 });
 
-describe('login', () => {
+describe('login resolver', () => {
 	beforeEach(async () => {
 		createTestUserIfNotExist(signupArgs);
 	});
