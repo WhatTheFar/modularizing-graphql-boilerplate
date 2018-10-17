@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
+import { ValidationError } from 'yup';
 import { deleteTestUserIfExists, requestGql } from '../test-utils';
 import { UserWhereUniqueInput } from './../generated/prisma';
 import { createTestUserIfNotExist, mockUserArgs } from './../test-utils';
-import { ILoginArgs, ISignupArgs } from './auth.resolvers';
+import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { signupValidationSchema } from './auth.validation';
-import { ValidationError } from 'yup';
 
 const email = 'auth@gmail.com';
 const password = 'password123';

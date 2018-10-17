@@ -3,6 +3,7 @@ import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
 import { AuthError, getUser } from '../utils';
 import { Prisma, User } from './../generated/prisma';
+import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { loginValidationSchema, signupValidationSchema } from './auth.validation';
 
 export const generateToken = (user: User) =>
@@ -18,18 +19,6 @@ export const createUserToPrisma = async (prisma: Prisma, args: ISignupArgs) => {
 	});
 	return user;
 };
-
-export interface ISignupArgs {
-	email: string;
-	password: string;
-	firstName: string;
-	lastName: string;
-}
-
-export interface ILoginArgs {
-	email: string;
-	password: string;
-}
 
 export const authResolver = {
 	Query: {
