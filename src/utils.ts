@@ -2,7 +2,7 @@ import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
 
 export function getUserId(context: Context) {
-	const Authorization = context.request.get('Authorization');
+	const Authorization = context.request.headers.authorization;
 	if (Authorization) {
 		const token = Authorization.replace('Bearer ', '');
 		const { userId } = jwt.verify(token, process.env.APP_SECRET!) as TokenPayload;
@@ -13,7 +13,7 @@ export function getUserId(context: Context) {
 }
 
 export async function getUser(context: Context, info?: GraphQLResolveInfo | string) {
-	const Authorization = context.request.get('Authorization');
+	const Authorization = context.request.headers.authorization;
 	if (Authorization) {
 		const token = Authorization.replace('Bearer ', '');
 		const { userId } = jwt.verify(token, process.env.APP_SECRET!) as TokenPayload;

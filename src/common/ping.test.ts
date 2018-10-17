@@ -1,3 +1,5 @@
+import { graphql } from 'graphql';
+import { graphqlServer } from '../server';
 import { getUserBearerToken, mockUserArgs, requestGql } from '../test-utils';
 import { ISignupArgs } from './../auth/auth.resolvers';
 import { createTestUserIfNotExist } from './../test-utils';
@@ -41,4 +43,20 @@ test('pingAuthenticated', async () => {
 		.expect(res => {
 			expect(res.body.data).toEqual({ pingAuthenticated: 'pong' });
 		});
+});
+
+test('pingAuthenticated without supertest', async () => {
+	expect.assertions(1);
+	const gql = `
+	    query {
+	        pingAuthenticated
+	    }
+	`;
+
+	const response = await graphql(graphqlServer.executableSchema, gql, null, {
+		request: { headers: { authorization: token } },
+		db: { exists: { User: jest.fn().mockReturnValue(true) } }
+	});
+
+	expect(response.data).toEqual({ pingAuthenticated: 'pong' });
 });
