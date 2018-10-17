@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 import { graphqlServer } from '../server';
 import { getUserBearerToken, mockUserArgs, requestGql } from '../test-utils';
-import { ISignupArgs } from './../auth/auth.resolvers';
+import { ISignupArgs } from './../auth/auth.interfaces';
 import { createTestUserIfNotExist } from './../test-utils';
 
 let token: string;

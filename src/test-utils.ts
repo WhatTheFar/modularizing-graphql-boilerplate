@@ -1,5 +1,6 @@
 import * as request from 'supertest';
-import { createUserToPrisma, generateToken, ISignupArgs } from './auth/auth.resolvers';
+import { ISignupArgs } from './auth/auth.interfaces';
+import { createUserToPrisma, generateToken } from './auth/auth.resolvers';
 import { User, UserWhereUniqueInput } from './generated/prisma';
 import { db } from './server';
 import { graphqlServer, server } from './server';
