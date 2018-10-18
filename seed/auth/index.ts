@@ -1,4 +1,4 @@
-import { ISignupArgs } from '../../src/auth/auth.resolvers';
+import { ISignupArgs } from '../../src/auth/auth.interfaces';
 import { requestGql } from '../../src/test-utils';
 import { signupGql } from './../../src/auth/auth.test';
 import { logGraphqlError } from './../utils';
