@@ -5,12 +5,12 @@
 version: 2.0
 jobs:
   build:
-    environment:
-      PRISMA_ENDPOINT: http://localhost:4466
-      PRISMA_SECRET: prisma_secret
-      APP_SECRET: app_secret
     docker:
       - image: circleci/node:8
+        environment:
+          PRISMA_ENDPOINT: http://localhost:4466
+          PRISMA_SECRET: prisma_secret
+          APP_SECRET: app_secret
       - image: postgres:10
         environment:
           POSTGRES_USER: prisma
