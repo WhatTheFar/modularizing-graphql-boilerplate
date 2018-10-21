@@ -5,6 +5,7 @@ import { join } from 'path';
 export const mergeResolvers = (mergingResolvers: any[]) => {
 	const reducedResolver = mergingResolvers.reduce((prev, current) => {
 		return {
+			...prev,
 			...current,
 			Query: {
 				...prev.Query,
