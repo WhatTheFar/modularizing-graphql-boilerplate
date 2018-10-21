@@ -50,6 +50,8 @@ bash scripts/clean-local.sh
    ```
    > **NOTE:** To use desktop version of GraphQL Playground, download it from [releases](https://github.com/prisma/graphql-playground/releases) or [install via Homebrew](https://github.com/prisma/graphql-playground#installation).
 
+**NOTE:** This is a recommended method to run local dev server, but there is also an [alternative method](#run-the-project-(alternative)) to optimise development cycle.
+
 ### Seed the database
 Seed initial data to database for development.
 
@@ -59,6 +61,23 @@ Seed initial data to database for development.
     ```sh
     bash scripts/seed.sh
     ```
+
+### Run the project (alternative)
+
+This method is recommended for advanced docker user. See [`setup-dev.sh`](scripts/setup-dev.sh), [`run-dev.sh`](scripts/run-dev.sh) for more details of the scripts.
+
+1. Make sure you have [run the project](#run-the-project) once.
+2. Setting up dev environment:
+   ```sh
+   bash scripts/setup-dev.sh
+   ```
+3. Run the test:
+    ```sh
+    bash scripts/run-dev.sh
+    ```
+    > **NOTE**: Repeat step 3 to run server again
+
+
 ## Testing
 
 ### Run the test
