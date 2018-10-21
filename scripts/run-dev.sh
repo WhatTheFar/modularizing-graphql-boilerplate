@@ -7,9 +7,9 @@ else
     exit 1
 fi
 export PRISMA_ENDPOINT=http://localhost:4466
-export NODE_ENV=test
+export NODE_ENV=development
 if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
-    bash scripts/setup-test.sh
+    bash scripts/setup-dev.sh
 fi
-echo "# Running test"
-yarn test
+echo "# Running dev"
+yarn start

@@ -7,9 +7,14 @@ else
     exit 1
 fi
 export PRISMA_ENDPOINT=http://localhost:4466
-export NODE_ENV=test
+bash scripts/clear-container.sh
 if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
-    bash scripts/setup-test.sh
+    echo "# Setting up environment"
+    # run container
+    docker-compose up -d prisma
+    echo "# Wating for database"
+    sleep 10
+    echo "# Deploying prisma service"
+    yarn prisma-deploy
 fi
-echo "# Running test"
-yarn test
+echo "# Everything is already up"
