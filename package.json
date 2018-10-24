@@ -6,6 +6,7 @@
 		"dev": "npm-run-all --parallel start playground",
 		"start": "nodemon -e ts,graphql --ignore src/generated/schema.graphql -x ts-node -r dotenv/config src/index.ts",
 		"start:prod": "node dist/index.js",
+		"serve-debug": "nodemon -e ts,graphql --ignore src/generated/schema.graphql --inspect -r ts-node/register src/index.ts",
 		"test": "jest",
 		"watch-test": "yarn test --watchAll",
 		"playground": "graphql playground",
