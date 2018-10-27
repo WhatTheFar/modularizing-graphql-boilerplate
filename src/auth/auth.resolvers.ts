@@ -70,9 +70,13 @@ export const authResolver = {
 	},
 
 	AuthPayload: {
-		async user(parent, args, context, info) {
+		async user(parent, args, context, info: GraphQLResolveInfo) {
 			if (parent.user.id) {
-				return context.db.query.user({ where: { id: parent.user.id } }, info);
+				const user = await context.db.query.user(
+					{ where: { id: parent.user.id } },
+					info
+				);
+				return user || parent.user;
 			}
 			return parent.user;
 		}
