@@ -1,7 +1,7 @@
+import { mergeResolvers } from '@src/resolvers';
 import { shield } from 'graphql-shield';
 import { fileLoader } from 'merge-graphql-schemas';
 import { join } from 'path';
-import { mergeResolvers } from './resolvers';
 
 const permissionsArray = fileLoader(join(__dirname, './**/*.permissions.*')) as any[];
 

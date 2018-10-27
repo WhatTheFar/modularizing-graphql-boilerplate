@@ -1,11 +1,11 @@
+import { Prisma } from '@src/generated/prisma';
+import { middlewares } from '@src/middlewares/index';
+import { permissions } from '@src/permissions';
+import { resolvers } from '@src/resolvers';
+import { extendedTypeDefs, generateTypeDefs } from '@src/typeDefs';
 import { GraphQLServer, Options } from 'graphql-yoga';
 import { yupMiddleware } from 'graphql-yup-middleware';
 import { extractFragmentReplacements } from 'prisma-binding';
-import { Prisma } from './generated/prisma';
-import { middlewares } from './middlewares/index';
-import { permissions } from './permissions';
-import { resolvers } from './resolvers';
-import { generateTypeDefs } from './typeDefs';
 
 export const db = new Prisma({
 	fragmentReplacements: extractFragmentReplacements(resolvers),
@@ -20,7 +20,7 @@ export const createGraphQLServer = () => {
 	generateTypeDefs();
 
 	return new GraphQLServer({
-		typeDefs: ['./src/generated/schema.graphql'],
+		typeDefs: ['./src/generated/schema.graphql', extendedTypeDefs],
 		resolvers,
 		context: req => ({ ...req, db }),
 		middlewares: [permissions, yupMiddleware(), ...middlewares],

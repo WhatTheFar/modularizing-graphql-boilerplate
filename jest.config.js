@@ -8,6 +8,11 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  testEnvironment: 'node'
+  // testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    "^@root(.*)$": "<rootDir>$1",
+    "^@src(.*)$": "<rootDir>/src$1"
+  }
 };

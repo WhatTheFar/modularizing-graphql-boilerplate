@@ -1,8 +1,8 @@
+import { Prisma, User } from '@src/generated/prisma';
+import { AuthError, getUser } from '@src/utils';
 import * as bcrypt from 'bcryptjs';
 import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
-import { AuthError, getUser } from '../utils';
-import { Prisma, User } from './../generated/prisma';
 import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { loginValidationSchema, signupValidationSchema } from './auth.validation';
 

@@ -1,8 +1,8 @@
+import { UserWhereUniqueInput } from '@src/generated/prisma';
+import { deleteTestUserIfExists, requestGql } from '@src/test-utils';
+import { createTestUserIfNotExist, mockUserArgs } from '@src/test-utils';
 import * as _ from 'lodash';
 import { ValidationError } from 'yup';
-import { deleteTestUserIfExists, requestGql } from '../test-utils';
-import { UserWhereUniqueInput } from './../generated/prisma';
-import { createTestUserIfNotExist, mockUserArgs } from './../test-utils';
 import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { signupValidationSchema } from './auth.validation';
 

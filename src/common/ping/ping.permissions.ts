@@ -1,5 +1,5 @@
+import { isAuthenticated } from '@src/auth/auth.rules';
 import { not } from 'graphql-shield';
-import { isAuthenticated } from './../auth/auth.rules';
 
 const pingPermissions = {
 	Query: {

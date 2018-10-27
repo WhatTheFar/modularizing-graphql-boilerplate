@@ -1,8 +1,8 @@
+import { ISignupArgs } from '@src/auth/auth.interfaces';
+import { graphqlServer } from '@src/server';
+import { getUserBearerToken, mockUserArgs, requestGql } from '@src/test-utils';
+import { createTestUserIfNotExist } from '@src/test-utils';
 import { graphql } from 'graphql';
-import { graphqlServer } from '../server';
-import { getUserBearerToken, mockUserArgs, requestGql } from '../test-utils';
-import { ISignupArgs } from './../auth/auth.interfaces';
-import { createTestUserIfNotExist } from './../test-utils';
 
 let token: string;
 

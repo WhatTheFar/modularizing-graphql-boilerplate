@@ -1,9 +1,9 @@
+import { ISignupArgs } from '@src/auth/auth.interfaces';
+import { createUserToPrisma, generateToken } from '@src/auth/auth.resolvers';
+import { User, UserWhereUniqueInput } from '@src/generated/prisma';
+import { db } from '@src/server';
+import { graphqlServer, server } from '@src/server';
 import * as request from 'supertest';
-import { ISignupArgs } from './auth/auth.interfaces';
-import { createUserToPrisma, generateToken } from './auth/auth.resolvers';
-import { User, UserWhereUniqueInput } from './generated/prisma';
-import { db } from './server';
-import { graphqlServer, server } from './server';
 
 interface IVariables {
 	[key: string]: any;
