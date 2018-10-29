@@ -59,7 +59,7 @@ Seed initial data to database for development.
 2. Recommended for an empty database. If database is dirty, there might occurs some error during the seed.
 3. Seed the database:
     ```sh
-    bash scripts/seed.sh
+    bash scripts/run-seed.sh
     ```
 
 ### Run the project (alternative)
