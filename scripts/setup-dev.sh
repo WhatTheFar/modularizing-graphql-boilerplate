@@ -11,7 +11,7 @@ bash scripts/clear-container.sh
 if [ ! "$(docker ps -q -f name=$PRISMA_CONTAINER_NAME)" ]; then
     echo "# Setting up environment"
     # run container
-    docker-compose up -d prisma
+    docker-compose up -d prisma pgadmin
     echo "# Wating for database"
     sleep 10
     echo "# Deploying prisma service"

@@ -4,6 +4,9 @@ services:
   prisma:
     ports:
       - 4466:4466
+  pgadmin:
+    ports:
+      - 5050:80
   backend: 
     build: 
       context: .

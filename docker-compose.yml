@@ -31,6 +31,12 @@ services:
       - POSTGRES_PASSWORD
     volumes:
       - postgres:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL:
+      PGADMIN_DEFAULT_PASSWORD:
   backend:
     build: 
       context: .
