@@ -3,6 +3,7 @@ import { deleteTestUserIfExists, requestGql } from '@src/test-utils';
 import { createTestUserIfNotExist, mockUserArgs } from '@src/test-utils';
 import * as _ from 'lodash';
 import { ValidationError } from 'yup';
+import { loginGql, signupGql } from './auth.interfaces';
 import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { signupValidationSchema } from './auth.validation';
 
@@ -20,34 +21,6 @@ const loginArgs: ILoginArgs = {
 	email,
 	password
 };
-
-export const signupGql = `
-	mutation signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
-		signup (
-			email: $email
-			password: $password
-			firstName: $firstName
-			lastName: $lastName
-		) {
-			payload {
-				token
-			}
-		}
-	}
-`;
-
-export const loginGql = `
-	mutation login($email: String!, $password: String!) {
-		login (
-			email: $email
-			password: $password
-		) {
-			payload {
-				token
-			}
-		}
-	}
-`;
 
 describe('signup validation', () => {
 	test('should valid', async () => {
