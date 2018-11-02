@@ -102,8 +102,6 @@ const chatroomResolver = {
 				(parent, args, { pubsub }: Context) =>
 					pubsub.asyncIterator(PUBSUB_NEW_MESSAGE),
 				(payload, args) => {
-					console.log(payload);
-					console.log(args);
 					return payload.newMessage.chatroom.id === args.chatroom;
 				}
 			)
