@@ -3,7 +3,7 @@ import { middlewares } from '@src/middlewares/index';
 import { permissions } from '@src/permissions';
 import { resolvers } from '@src/resolvers';
 import { extendedTypeDefs, generateTypeDefs } from '@src/typeDefs';
-import { GraphQLServer, Options } from 'graphql-yoga';
+import { GraphQLServer, Options, PubSub } from 'graphql-yoga';
 import { yupMiddleware } from 'graphql-yup-middleware';
 import { extractFragmentReplacements } from 'prisma-binding';
 
@@ -16,13 +16,15 @@ export const db = new Prisma({
 
 export const options: Options = {};
 
+export const pubsub = new PubSub();
+
 export const createGraphQLServer = () => {
 	generateTypeDefs();
 
 	return new GraphQLServer({
 		typeDefs: ['./src/generated/schema.graphql', extendedTypeDefs],
 		resolvers,
-		context: req => ({ ...req, db }),
+		context: req => ({ ...req, db, pubsub }),
 		middlewares: [permissions, yupMiddleware(), ...middlewares],
 		resolverValidationOptions: {
 			requireResolversForResolveType: false

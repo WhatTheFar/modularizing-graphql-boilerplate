@@ -1,0 +1,13 @@
+type Query {
+	chatroom(chatroom: ID!): Chatroom!
+}
+
+type Mutation {
+	createChatroom(users: [ID!]!): Chatroom!
+	joinChatroom(chatroom: ID!): Chatroom!
+	sendMessage(chatroom: ID!, message: String!): Message!
+}
+
+type Subscription {
+	newMessage(chatroom: ID!): Message!
+}
