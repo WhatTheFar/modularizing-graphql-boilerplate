@@ -5,7 +5,9 @@ const chatroomPermission = {
 		chatroom: isAuthenticated
 	},
 	Mutation: {
-		sendMessage: isAuthenticated
+		sendMessage: isAuthenticated,
+		joinChatroom: isAuthenticated,
+		createChatroom: isAuthenticated
 	}
 };
 
