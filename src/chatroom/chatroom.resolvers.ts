@@ -4,7 +4,8 @@ import {
 	IChatroomArgs,
 	ICreateChatroomArgs,
 	IJoinChatroomArgs,
-	ISendMessageArgs
+	ISendMessageArgs,
+	ISubscribeToNewMessageArgs
 } from './chatroom.interfaces';
 
 const PUBSUB_NEW_MESSAGE = 'PUBSUB_NEW_MESSAGE';
@@ -101,10 +102,32 @@ const chatroomResolver = {
 			subscribe: withFilter(
 				(parent, args, { pubsub }: Context) =>
 					pubsub.asyncIterator(PUBSUB_NEW_MESSAGE),
-				(payload, args) => {
-					return payload.newMessage.chatroom.id === args.chatroom;
+				(payload, { chatroom }: ISubscribeToNewMessageArgs) => {
+					return payload.newMessage.chatroom.id === chatroom;
 				}
 			)
+		},
+		newMessagePrisma: {
+			subscribe(
+				parent,
+				{ chatroom }: ISubscribeToNewMessageArgs,
+				ctx: Context,
+				info
+			) {
+				return ctx.db.subscription.message(
+					{
+						where: {
+							mutation_in: 'CREATED',
+							node: {
+								chatroom: {
+									id: chatroom
+								}
+							}
+						}
+					},
+					info
+				);
+			}
 		}
 	}
 };

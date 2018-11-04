@@ -10,4 +10,5 @@ type Mutation {
 
 type Subscription {
 	newMessage(chatroom: ID!): Message!
+	newMessagePrisma(chatroom: ID!): MessageSubscriptionPayload!
 }

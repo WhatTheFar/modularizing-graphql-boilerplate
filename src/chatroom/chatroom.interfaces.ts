@@ -14,3 +14,7 @@ export interface ICreateChatroomArgs {
 export interface IJoinChatroomArgs {
 	chatroom: string;
 }
+
+export interface ISubscribeToNewMessageArgs {
+	chatroom: string;
+}
