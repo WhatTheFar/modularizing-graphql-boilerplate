@@ -1,0 +1,17 @@
+type User {
+	messages: [Message!]!
+	chatroom: [Chatroom!]!
+}
+
+type Message {
+	id: ID! @unique
+	message: String!
+	writer: User!
+	chatroom: Chatroom!
+}
+
+type Chatroom {
+	id: ID! @unique
+	users: [User!]!
+	messages: [Message!]!
+}
