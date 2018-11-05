@@ -1,5 +1,6 @@
-import { ISignupArgs } from '@src/auth/auth.interfaces';
 import { createUserToPrisma, generateToken } from '@src/auth/auth.resolvers';
+import { MutationResolvers } from '@src/generated/graphqlgen';
+import ArgsSignup = MutationResolvers.ArgsSignup;
 import { User, UserWhereUniqueInput } from '@src/generated/prisma';
 import { db } from '@src/server';
 import { graphqlServer, server } from '@src/server';
@@ -9,25 +10,26 @@ interface IVariables {
 	[key: string]: any;
 }
 
-export const mockUserArgs: ISignupArgs = {
+export const mockUserArgs: ArgsSignup = {
 	email: 'jakpat.m@gmail.com',
 	password: 'password123',
 	firstName: 'John',
 	lastName: 'Doe'
 };
 
-export const requestGql = (query: string, variables?: IVariables) => {
+export const requestGql = (query: any, variables?: IVariables) => {
 	const body = JSON.stringify({
 		query,
 		variables
 	});
+
 	return request(server)
 		.post(graphqlServer.options.endpoint || '/')
 		.set('Content-Type', 'application/json')
 		.send(body);
 };
 
-export const createTestUserIfNotExist = async (args: ISignupArgs) => {
+export const createTestUserIfNotExist = async (args: ArgsSignup) => {
 	if (!(await db.exists.User({ email: args.email }))) {
 		await createUserToPrisma(db, args);
 	}

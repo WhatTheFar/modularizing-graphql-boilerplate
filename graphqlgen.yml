@@ -1,0 +1,15 @@
+language: typescript
+
+schema: ./src/generated/schema.graphql
+context: ./src/types.ts:Context
+models:
+  files:
+    - ./src/generated/prisma.ts
+    - ./src/types.ts
+    - ./src/auth/auth.types.ts
+
+output: ./src/generated/graphqlgen.ts
+
+resolver-scaffolding:
+  output: ./src/generated/tmp-resolvers/
+  layout: file-per-type

@@ -3,8 +3,10 @@ import { deleteTestUserIfExists, requestGql } from '@src/test-utils';
 import { createTestUserIfNotExist, mockUserArgs } from '@src/test-utils';
 import * as _ from 'lodash';
 import { ValidationError } from 'yup';
+import { MutationResolvers } from './../generated/graphqlgen';
+import ArgsSignup = MutationResolvers.ArgsSignup;
+import ArgsLogin = MutationResolvers.ArgsLogin;
 import { loginGql, signupGql } from './auth.interfaces';
-import { ILoginArgs, ISignupArgs } from './auth.interfaces';
 import { signupValidationSchema } from './auth.validation';
 
 const email = 'auth@gmail.com';
@@ -12,12 +14,12 @@ const password = 'password123';
 const userWhereUniqueInput: UserWhereUniqueInput = {
 	email
 };
-const signupArgs: ISignupArgs = {
+const argsSignup: ArgsSignup = {
 	...mockUserArgs,
 	email,
 	password
 };
-const loginArgs: ILoginArgs = {
+const argsLogin: ArgsLogin = {
 	email,
 	password
 };
@@ -26,13 +28,13 @@ describe('signup validation', () => {
 	test('should valid', async () => {
 		expect.assertions(1);
 
-		expect(await signupValidationSchema.isValid(signupArgs)).toBeTruthy();
+		expect(await signupValidationSchema.isValid(argsSignup)).toBeTruthy();
 	});
 
 	test('missing args should be invalid', async () => {
 		expect.assertions(2);
 		const args = {
-			...signupArgs,
+			...argsSignup,
 			email: '',
 			firstName: '',
 			lastName: ''
@@ -63,7 +65,7 @@ describe('signup validation', () => {
 
 		await expect(
 			signupValidationSchema.validate({
-				...signupArgs,
+				...argsSignup,
 				email: 'this_is_not_an_email'
 			})
 		).rejects.toHaveProperty('path', 'email');
@@ -78,7 +80,7 @@ describe('signup resolver', () => {
 	test('should return token', async () => {
 		expect.assertions(1);
 
-		await requestGql(signupGql, signupArgs).expect(res => {
+		await requestGql(signupGql, argsSignup).expect(res => {
 			expect(res.body).toHaveProperty('data.signup.payload.token');
 		});
 	});
@@ -86,13 +88,13 @@ describe('signup resolver', () => {
 
 describe('login resolver', () => {
 	beforeEach(async () => {
-		createTestUserIfNotExist(signupArgs);
+		createTestUserIfNotExist(argsSignup);
 	});
 
 	test('should return token', async () => {
 		expect.assertions(1);
 
-		await requestGql(loginGql, loginArgs).expect(res => {
+		await requestGql(loginGql, argsLogin).expect(res => {
 			expect(res.body).toHaveProperty('data.login.payload.token');
 		});
 	});

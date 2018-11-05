@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo } from 'graphql';
 import * as jwt from 'jsonwebtoken';
+import { Context, TokenPayload } from './types';
 
 export function getUserId(context: Context) {
 	const Authorization = context.request.headers.authorization;

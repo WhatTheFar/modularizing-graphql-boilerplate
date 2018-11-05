@@ -1,8 +1,8 @@
 # Executed by yarn
 rm -rf dist
-ts-node prisma/datamodel.ts
+yarn gen-datamodel
 graphql codegen
-ts-node scripts/generateTypeDefs.ts
+yarn gen-typedef
 tsc
 echo # Copying graphql schema
 mkdir -p ./dist/generated

@@ -1,18 +1,13 @@
-export interface ISignupArgs {
-	email: string;
-	password: string;
-	firstName: string;
-	lastName: string;
-}
+import gql from 'graphql-tag';
 
-export interface ILoginArgs {
-	email: string;
-	password: string;
-}
-
-export const signupGql = `
-	mutation signup($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
-		signup (
+export const signupGql = gql`
+	mutation signup(
+		$email: String!
+		$password: String!
+		$firstName: String!
+		$lastName: String!
+	) {
+		signup(
 			email: $email
 			password: $password
 			firstName: $firstName
@@ -25,12 +20,9 @@ export const signupGql = `
 	}
 `;
 
-export const loginGql = `
+export const loginGql = gql`
 	mutation login($email: String!, $password: String!) {
-		login (
-			email: $email
-			password: $password
-		) {
+		login(email: $email, password: $password) {
 			payload {
 				token
 			}

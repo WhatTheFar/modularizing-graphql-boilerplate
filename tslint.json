@@ -23,7 +23,7 @@
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": [
-            "src/generated/*"
+            "src/generated/**"
         ]
     }
 }

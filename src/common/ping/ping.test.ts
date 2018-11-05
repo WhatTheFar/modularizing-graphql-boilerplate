@@ -1,13 +1,15 @@
-import { ISignupArgs } from '@src/auth/auth.interfaces';
+import { MutationResolvers } from '@src/generated/graphqlgen';
+import ArgsSignup = MutationResolvers.ArgsSignup;
 import { graphqlServer } from '@src/server';
 import { getUserBearerToken, mockUserArgs, requestGql } from '@src/test-utils';
 import { createTestUserIfNotExist } from '@src/test-utils';
 import { graphql } from 'graphql';
+import gql from 'graphql-tag';
 
 let token: string;
 
 const email = 'ping@gmail.com';
-const signupArgs: ISignupArgs = {
+const signupArgs: ArgsSignup = {
 	...mockUserArgs,
 	email
 };
@@ -19,26 +21,26 @@ beforeAll(async () => {
 
 test('ping', async () => {
 	expect.assertions(1);
-	const gql = `
-	    query {
-	        ping
-	    }
+	const tag = gql`
+		query {
+			ping
+		}
 	`;
 
-	await requestGql(gql).expect(res => {
+	await requestGql(tag).expect(res => {
 		expect(res.body.data).toEqual({ ping: 'pong' });
 	});
 });
 
 test('pingAuthenticated', async () => {
 	expect.assertions(1);
-	const gql = `
-	    query {
-	        pingAuthenticated
-	    }
+	const tag = gql`
+		query {
+			pingAuthenticated
+		}
 	`;
 
-	await requestGql(gql)
+	await requestGql(tag)
 		.set('Authorization', token)
 		.expect(res => {
 			expect(res.body.data).toEqual({ pingAuthenticated: 'pong' });
@@ -47,13 +49,13 @@ test('pingAuthenticated', async () => {
 
 test('pingAuthenticated without supertest', async () => {
 	expect.assertions(1);
-	const gql = `
-	    query {
-	        pingAuthenticated
-	    }
+	const tag = `
+		query {
+			pingAuthenticated
+		}
 	`;
 
-	const response = await graphql(graphqlServer.executableSchema, gql, null, {
+	const response = await graphql(graphqlServer.executableSchema, tag, null, {
 		request: { headers: { authorization: token } },
 		db: { exists: { User: jest.fn().mockReturnValue(true) } }
 	});

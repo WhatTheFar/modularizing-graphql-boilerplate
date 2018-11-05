@@ -1,3 +1,5 @@
+import { Context } from './../../types';
+
 const extendTypeResolver = {
 	User: {
 		async extendedField(parent, args, ctx: Context, info) {
