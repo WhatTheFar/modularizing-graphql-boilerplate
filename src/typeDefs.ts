@@ -9,6 +9,8 @@ export const generateTypeDefs = () => {
 	const typeDefs = `
 # import * from "prisma.graphql"
 
+scalar Upload
+
 ${FieldValidationError}
 ${MutationValidationError}
 ${mergeTypes(typesArray, { all: true })}
