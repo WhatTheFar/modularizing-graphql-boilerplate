@@ -1,25 +1,12 @@
-import { Prisma, User } from '@src/generated/prisma';
+import { createUserToPrisma, generateToken } from '@src/auth/auth.services';
 import { AuthError, getUser } from '@src/utils';
 import * as bcrypt from 'bcryptjs';
-import { GraphQLResolveInfo } from 'graphql';
-import * as jwt from 'jsonwebtoken';
-import { MutationResolvers, QueryResolvers } from './../generated/graphqlgen';
-import ArgsSignup = MutationResolvers.ArgsSignup;
+import {
+	AuthPayloadResolvers,
+	MutationResolvers,
+	QueryResolvers
+} from './../generated/graphqlgen';
 import { loginValidationSchema, signupValidationSchema } from './auth.validation';
-
-export const generateToken = (user: User) =>
-	jwt.sign({ userId: user.id }, process.env.APP_SECRET || 'jwt_secret');
-
-export const createUserToPrisma = async (prisma: Prisma, args: ArgsSignup) => {
-	const password = await bcrypt.hash(args.password, 10);
-	const user = await prisma.mutation.createUser({
-		data: {
-			...args,
-			password
-		}
-	});
-	return user;
-};
 
 const currentUserResolver: QueryResolvers.CurrentUserResolver = async (
 	parent,
@@ -66,6 +53,17 @@ const loginResolver: MutationResolvers.LoginResolver = async (
 	};
 };
 
+const authPayloadResolver: AuthPayloadResolvers.Type = {
+	...AuthPayloadResolvers.defaultResolvers,
+	user: async (parent, args, ctx, info) => {
+		if (parent.user.id) {
+			const user = await ctx.db.query.user({ where: { id: parent.user.id } }, info);
+			return user || parent.user;
+		}
+		return parent.user;
+	}
+};
+
 export const authResolver = {
 	Query: {
 		currentUser: currentUserResolver
@@ -83,18 +81,7 @@ export const authResolver = {
 		}
 	},
 
-	AuthPayload: {
-		async user(parent, args, context, info: GraphQLResolveInfo) {
-			if (parent.user.id) {
-				const user = await context.db.query.user(
-					{ where: { id: parent.user.id } },
-					info
-				);
-				return user || parent.user;
-			}
-			return parent.user;
-		}
-	}
+	AuthPayload: authPayloadResolver
 };
 
 export default authResolver;

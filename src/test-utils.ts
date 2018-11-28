@@ -1,4 +1,4 @@
-import { createUserToPrisma, generateToken } from '@src/auth/auth.resolvers';
+import { createUserToPrisma, generateToken } from '@src/auth/auth.services';
 import { MutationResolvers } from '@src/generated/graphqlgen';
 import ArgsSignup = MutationResolvers.ArgsSignup;
 import { User, UserWhereUniqueInput } from '@src/generated/prisma';
