@@ -13,7 +13,7 @@
 		"build": "sh ./scripts/build-src.sh",
 		"gen-typedef": "ts-node scripts/generateTypeDefs.ts && graphqlgen",
 		"gen-datamodel": "ts-node prisma/datamodel.ts",
-		"prisma-deploy": "yarn gen-datamodel && prisma deploy",
+		"prisma-deploy": "yarn gen-datamodel && prisma deploy && yarn gen-typedef",
 		"seed": "ts-node seed/index.ts",
 		"lint": "yarn tslint && yarn prettier",
 		"tslint": "tslint -c tslint.json -p tsconfig.json -e \"./src/generated/*.ts\" --fix",
