@@ -66,7 +66,7 @@ Seed initial data to database for development.
 
 This method is recommended for advanced docker user. See [`setup-dev.sh`](scripts/setup-dev.sh), [`run-dev.sh`](scripts/run-dev.sh) for more details of the scripts.
 
-1. Make sure you have [run the project](#run-the-project) once, or run the  following command to install dependencies.
+1. Make sure you have [run the project](#run-the-project) once, or run the following command to install dependencies.
     ```sh
     yarn
     ```
@@ -74,7 +74,7 @@ This method is recommended for advanced docker user. See [`setup-dev.sh`](script
    ```sh
    bash scripts/setup-dev.sh
    ```
-3. Run the test:
+3. Run the server:
     ```sh
     bash scripts/run-dev.sh
     # OR
