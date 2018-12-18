@@ -1,4 +1,5 @@
 type Query {
 	ping: String!
 	pingAuthenticated: String!
+	pingDate(date: DateTime): DateTime!
 }

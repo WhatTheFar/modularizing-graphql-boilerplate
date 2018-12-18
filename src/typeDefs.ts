@@ -10,6 +10,7 @@ export const generateTypeDefs = () => {
 # import * from "prisma.graphql"
 
 scalar Upload
+scalar DateTime
 
 ${FieldValidationError}
 ${MutationValidationError}
