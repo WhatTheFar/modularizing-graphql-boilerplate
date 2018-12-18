@@ -2,7 +2,6 @@ import { UserWhereUniqueInput } from '@src/generated/prisma';
 import { deleteTestUserIfExists, requestGql } from '@src/test-utils';
 import { createTestUserIfNotExist, mockUserArgs } from '@src/test-utils';
 import * as _ from 'lodash';
-import { ValidationError } from 'yup';
 import { MutationResolvers } from './../generated/graphqlgen';
 import ArgsSignup = MutationResolvers.ArgsSignup;
 import ArgsLogin = MutationResolvers.ArgsLogin;
@@ -50,13 +49,12 @@ describe('signup validation', () => {
 			// alternatively errors will have all the of the messages from each inner error.
 			await signupValidationSchema.validate(args, { abortEarly: false });
 		} catch (error) {
-			if (error instanceof ValidationError) {
-				// NOTE: if 'abortEarly' is false, the errors will be in 'inner'
-				expect(_.map(error.inner, 'path')).toEqual(
-					// Expecting 3 ValidationError
-					expect.arrayContaining(['email', 'firstName', 'lastName'])
-				);
-			}
+			// NOTE: if 'abortEarly' is false, the errors will be in 'inner'
+			// const err: ValidationError = error;
+			expect(_.map(error.inner, 'path')).toEqual(
+				// Expecting 3 ValidationError
+				expect.arrayContaining(['email', 'firstName', 'lastName'])
+			);
 		}
 	});
 
