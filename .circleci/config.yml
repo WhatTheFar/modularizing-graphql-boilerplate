@@ -38,8 +38,9 @@ jobs:
       - restore_cache:
           keys:
             - dependencies-v1.0-{{ .Branch }}-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
+            # fallback to using the latest cache if no exact match is found
             - dependencies-v1.0-{{ .Branch }}
+            - dependencies-v1.0
       
       - run:
           name: Install Dependencies
