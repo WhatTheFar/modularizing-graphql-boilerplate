@@ -15,7 +15,7 @@ jobs:
         environment:
           POSTGRES_USER: prisma
           POSTGRES_PASSWORD: prisma
-      - image: prismagraphql/prisma:1.16
+      - image: prismagraphql/prisma:1.23
         environment:
           PRISMA_CONFIG: |
             port: 4466
