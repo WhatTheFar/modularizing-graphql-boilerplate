@@ -36,7 +36,7 @@
 		"graphql-yup-middleware": "0.0.1",
 		"graphqlgen": "0.4.0",
 		"jsonwebtoken": "8.4.0",
-		"lodash": "4.17.11",
+		"lodash": "4.17.13",
 		"merge-graphql-schemas": "1.5.8",
 		"module-alias": "2.1.0",
 		"prisma-binding": "2.2.12",
