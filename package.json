@@ -27,7 +27,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "2.4.3",
-		"graphql": "14.0.2",
+		"graphql": "14.5.4",
 		"graphql-iso-date": "3.6.1",
 		"graphql-shield": "5.1.0",
 		"graphql-tag": "2.10.0",
