@@ -45,7 +45,7 @@
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "2.4.2",
-		"@types/graphql-iso-date": "3.3.1",
+		"@types/graphql-iso-date": "3.3.3",
 		"@types/jest": "24.0.18",
 		"@types/jsonwebtoken": "8.3.0",
 		"@types/lodash": "4.14.119",
